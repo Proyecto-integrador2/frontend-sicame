@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Capture() {
   const [progress, setProgress] = useState(0);
@@ -40,7 +40,7 @@ function Capture() {
               </div>
               <div className="w-full h-2 bg-gray-300 mt-4 rounded-full">
                 <div
-                  className="h-2 bg-blue-600"
+                  className="h-2 bg-gray-900"
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
@@ -51,7 +51,14 @@ function Capture() {
               >
                 Iniciar Proceso
               </button>
+              <div>
+                <Link to="/" className="text-gray-600 text-sm font-medium hover:text-gray-800">
+                  Volver
+                </Link>
+              </div>
+              
             </>
+            
           )}
 
           {captureComplete && (
