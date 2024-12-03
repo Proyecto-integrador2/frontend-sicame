@@ -4,7 +4,7 @@ import Reportes from "./Reportes";
 import Gestion from "./Gestion";
 
 function AdminPanel() {
-  const [selectedSection, setSelectedSection] = useState("");
+  const [selectedSection, setSelectedSection] = useState("reportes");
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
