@@ -29,7 +29,7 @@ export const marcarAsistencia = async (formData) => {
 // Marcar salida
 export const marcarSalida = async (formData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/marcar-salida`, formData, {
+    const response = await axios.put(`${API_BASE_URL}/marcar-salida`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return response.data;

@@ -10,6 +10,7 @@ import EmployeeInfo from './components/EmployeeInfo';
 import AdminPanel from './components/AdminPanel';
 import Reportes from './components/Reportes';
 import Gestion from './components/Gestion';
+import ExitEmployee from './components/ExitEmployee';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/entrada" element={<Capture />} />
-        <Route path="/salida" element={<Capture />} />
+        <Route path="/salida" element={<ExitEmployee />} />
         <Route path="/asistencia/empleado" element={<EmployeeInfo />} />
        
         <Route path="/registrar-empleado" element={<RegistrarEmpleadoForm />} />
