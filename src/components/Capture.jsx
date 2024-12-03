@@ -38,7 +38,7 @@ function Capture() {
 
       // Navegar con los datos del empleado y la foto capturada
       navigate('/asistencia/empleado', {
-        state: { employeeData: employeeData, photo, emotion: response.emocion },
+        state: { employeeData: employeeData, photo, emotion: response.emocion, process: "in" },
       });
     } catch (error) {
       console.log('Error:', error);

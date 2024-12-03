@@ -13,12 +13,10 @@ function ExitEmployee() {
 
   const handleSubmit = async (photo) => {
     const now = new Date();
-    const fecha = now.toLocaleDateString('es-ES');
-    const horaEntrada = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    const horaSalida = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 
     const formData = new FormData();
-    formData.append('fecha', fecha);
-    formData.append('hora_entrada', horaEntrada);
+    formData.append('hora_salida', horaSalida);
     formData.append('foto', photo);
 
     try {
@@ -37,10 +35,10 @@ function ExitEmployee() {
 
       // Navegar con los datos del empleado y la foto capturada
         navigate('/asistencia/empleado', {
-          state: { employeeData: employeeData, photo, emotion: response.emocion },
+          state: { employeeData: employeeData, photo, emotion: response.emocion, process: "out"},
         });
     } catch (error) {
-      setMensaje(error.error || 'Error al marcar asistencia');
+      setMensaje(error.error || 'Error al marcar la salida');
     }
 };
 
@@ -98,7 +96,6 @@ function ExitEmployee() {
         if (prevProgress >= 100) {
           clearInterval(interval);
           setCaptureComplete(true);
-          //navigate('/captura/empleado', { state: { employeeData, emotion } }); // Enviar los datos al siguiente componente
           return 100;
         }
         return prevProgress + 10;

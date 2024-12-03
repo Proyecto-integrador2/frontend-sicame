@@ -7,7 +7,7 @@ import swal from 'sweetalert';
 function EmployeeInfo({ onConfirm, onCancel }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { employeeData, emotion } = location.state || {};
+  const { employeeData, emotion, process } = location.state || {};
   const { isListening, transcript, setIsListening } = useSpeechRecognition();
   const [observation, setObservation] = useState("Sin observaciones");
   const [timer, setTimer] = useState(null);
@@ -54,12 +54,13 @@ function EmployeeInfo({ onConfirm, onCancel }) {
 
   // Confirmar asistencia y actualizar observaciones
   const handleConfirm = async () => {
+    let messageOperation = process === "in" ? "Asitencia registrada correctamente" : "Salida registrada correctamente"
     try {
       const response = await actualizarObservaciones(employeeData.id_emocion, observation);
       if (response.message === 'Observaciones actualizadas correctamente') {
         swal({
           title: "Éxito",
-          text: "Asistencia confirmada correctamente",
+          text: messageOperation,
           icon: "success",
           buttons: {
             confirm: {
@@ -125,7 +126,7 @@ function EmployeeInfo({ onConfirm, onCancel }) {
             onClick={handleConfirm}
             className="bg-green-500 text-white py-2 px-4 rounded-lg w-full hover:bg-green-600 transition duration-200"
           >
-            Confirmar Asistencia
+            {process === "in" ? "Confirmar Asistencia" : "Confirmar Salida"}
           </button>
           <button
             onClick={() => navigate("/")}
