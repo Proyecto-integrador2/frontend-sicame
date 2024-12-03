@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { marcarAsistencia } from '../api/axiosInstance';
+import swal from 'sweetalert';
 
 function Capture() {
   const [progress, setProgress] = useState(0);
@@ -40,11 +41,29 @@ function Capture() {
       navigate('/asistencia/empleado', {
         state: { employeeData: employeeData, photo, emotion: response.emocion, process: "in" },
       });
-    } catch (error) {
-      console.log('Error:', error);
-        setMensaje(error.error || 'Error al marcar asistencia');
+    } catch (error) {  
+      handleNoFace(error.error);
     }
   };
+
+  const handleNoFace = async (error) => {
+    swal({
+      title: "Por favor, reintenta la operación",
+      text: error,
+      icon: "error",
+      buttons: {
+        confirm: {
+          text: "OK",
+          value: true,
+          visible: true,
+          className: "custom-btn",
+          closeModal: true,
+        },
+      },
+    }).then(() => {
+      navigate('/'); 
+    });
+  }
 
   const startCamera = async () => {
     setIsCameraStarted(true);
