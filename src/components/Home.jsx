@@ -5,7 +5,11 @@ function Home() {
   const navigate = useNavigate();
 
   const handleStartProcess = () => {
-    navigate('/captura');
+    navigate('/entrada');
+  };
+
+  const handleEndProcess = () => {
+    navigate('/salida');
   };
 
   const handleRegisterUser = () => {
@@ -30,7 +34,14 @@ function Home() {
             onClick={handleStartProcess}
             className="w-full h-16 bg-gray-900 text-white rounded-lg text-xl font-semibold hover:bg-gray-800 transition duration-200"
           >
-            Iniciar Registro de Asistencia
+            Marcar entrada
+          </button>
+
+          <button
+            onClick={handleEndProcess}
+            className="w-full h-16 bg-gray-900 text-white rounded-lg text-xl font-semibold hover:bg-gray-800 transition duration-200"
+          >
+            Marcar salida
           </button>
 
           <button

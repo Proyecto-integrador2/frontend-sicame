@@ -16,8 +16,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/captura" element={<Capture />} />
-        <Route path="/captura/empleado" element={<EmployeeInfo />} />
+        <Route path="/entrada" element={<Capture />} />
+        <Route path="/salida" element={<Capture />} />
+        <Route path="/asistencia/empleado" element={<EmployeeInfo />} />
        
         <Route path="/registrar-empleado" element={<RegistrarEmpleadoForm />} />
         <Route path="/admin" element={<AdminPanel />} />
