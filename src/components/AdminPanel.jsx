@@ -10,9 +10,15 @@ function AdminPanel() {
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
       {/* Header */}
       <header className="mb-6">
-        <h1 className="text-3xl font-semibold text-gray-800">Panel de administración SICAME</h1>
-        <Link to="/" className="text-gray-600 text-sm font-medium hover:text-gray-800">
-          Volver
+        {/* Logo */}
+        <img src={"./logo.png"} className="mx-auto w-16 pb-2" alt="logo" />
+        <h1 className="text-center text-3xl font-semibold text-gray-800">
+          Panel de administración SICAME
+        </h1>
+        <Link to="/">
+          <button className="border rounded-lg p-1 bg-gray-600 text-white text-sm font-medium hover:bg-gray-800">
+            Volver
+          </button>
         </Link>
       </header>
 
@@ -32,11 +38,10 @@ function AdminPanel() {
         </button>
       </div>
 
-       {/* Componente seleccionado */}
-       <div className="flex-grow border-t p-4">
-        {selectedSection === "reportes" && <Reportes />} 
-        {selectedSection === "gestion" && <Gestion />}   
-      
+      {/* Componente seleccionado */}
+      <div className="flex-grow border-t p-4">
+        {selectedSection === "reportes" && <Reportes />}
+        {selectedSection === "gestion" && <Gestion />}
       </div>
     </div>
   );
