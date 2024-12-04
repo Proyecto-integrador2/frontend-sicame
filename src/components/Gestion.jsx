@@ -1,13 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { listarEmpleados } from "../api/axiosInstance";
 
 function Gestion() {
   const navigate = useNavigate();
-  const empleados = [
-    { foto: "", nombre: "Juan Pérez", id: "EMPO01", cargo: "Operario", emocion: "Feliz" },
-    { foto: "", nombre: "María García", id: "EMPO02", cargo: "Supervisora", emocion: "Neutral" },
-    { foto: "", nombre: "Carlos Rodríguez", id: "EMPO03", cargo: "Técnico", emocion: "Estresado" },
-  ];
+  const [empleados, setEmpleados] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchEmpleados = async () => {
+      try {
+        const data = await listarEmpleados();
+        setEmpleados(data);
+      } catch (error) {
+        console.error("Error al listar empleados:", error);
+      }
+    };
+
+    fetchEmpleados();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -26,24 +36,20 @@ function Gestion() {
       <table className="min-w-full table-auto border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
-            <th className="py-2 px-4 text-left border-b">Foto</th>
-            <th className="py-2 px-4 text-left border-b">Nombre</th>
             <th className="py-2 px-4 text-left border-b">ID</th>
+            <th className="py-2 px-4 text-left border-b">Nombre</th> 
             <th className="py-2 px-4 text-left border-b">Cargo</th>
             <th className="py-2 px-4 text-left border-b">Última Emoción</th>
             <th className="py-2 px-4 text-left border-b">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {empleados.map((empleado, index) => (
-            <tr key={index} className="border-b">
-              <td className="py-2 px-4">
-                <div className="w-12 h-12 bg-gray-300 rounded-full"></div> {/* Imagen del empleado */}
-              </td>
+          {empleados.map((empleado) => (
+            <tr key={empleado.empleado_id} className="border-b">
+              <td className="py-2 px-4">{empleado.empleado_id}</td>
               <td className="py-2 px-4">{empleado.nombre}</td>
-              <td className="py-2 px-4">{empleado.id}</td>
               <td className="py-2 px-4">{empleado.cargo}</td>
-              <td className="py-2 px-4">{empleado.emocion}</td>
+              <td className="py-2 px-4">{empleado.ultima_emocion}</td>
               <td className="py-2 px-4">
                 <button className="text-blue-500 hover:underline">Editar</button>
                 <button className="text-red-500 hover:underline ml-4">Eliminar</button>

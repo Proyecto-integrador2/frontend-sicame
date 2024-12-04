@@ -72,3 +72,13 @@ export const actualizarObservaciones = async (emocionId, observaciones) => {
     throw error.response?.data || error.message;
   }
 };
+
+// Lista empleados
+export const listarEmpleados = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/empleados/`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
