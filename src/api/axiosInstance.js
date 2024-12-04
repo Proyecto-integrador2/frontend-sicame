@@ -82,3 +82,13 @@ export const listarEmpleados = async () => {
     throw error.response?.data || error.message;
   }
 };
+
+// Crear reporte
+export const generarReporte = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/generar-reporte`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};

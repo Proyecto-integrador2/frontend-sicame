@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import {useState, useEffect, useRef } from "react";
 import { getReportes } from "../api/axiosInstance";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import { generarReporte } from "../api/axiosInstance";
 
 function Reportes() {
   const [fecha, setFecha] = useState("");
   const [empleado, setEmpleado] = useState("");
+  const [ultimoReporte, setUltimoReporte] = useState([])
   const [tipoReporte, setTipoReporte] = useState("");
-  const [reportes, setReportes] = useState([]);
-
   const tableRef = useRef(null);
 
   const { onDownload } = useDownloadExcel({
@@ -17,16 +17,19 @@ function Reportes() {
   });
 
   useEffect(() => {
-    const fetchReportes = async () => {
+    const fetchReporte = async () => {
       try {
-        const data = await getReportes();
-        setReportes(data);
+        const data = await generarReporte();
+        setUltimoReporte(data);
+        setFecha(data[0].fecha)
       } catch (error) {
-        console.error("Error al listar reportes: ", error);
+        console.error("Error generando reporte:", error);
       }
     };
-    fetchReportes();
+
+    fetchReporte();
   }, []);
+
 
   return (
     <div className="p-6">
@@ -41,7 +44,7 @@ function Reportes() {
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
           className="border px-4 py-2 rounded-lg"
-          placeholder="dd/mm/aaaa"
+          placeholder=""
         />
         <select
           value={empleado}
@@ -49,7 +52,7 @@ function Reportes() {
           className="border px-4 py-2 rounded-lg"
         >
           <option value="">Seleccionar empleado</option>
-          {reportes.map((reporte, index) => (
+          {ultimoReporte.map((reporte, index) => (
             <option key={index} value={reporte.empleado_id}>
               {reporte.nombre}
             </option>
@@ -90,21 +93,29 @@ function Reportes() {
             </tr>
           </thead>
           <tbody>
-            {reportes.map((reporte, index) => (
+          {ultimoReporte.map((reporte, index) => (
               <tr key={index}>
-                <td className="px-4 py-2 border">{reporte.empleado.nombre}</td>
+                <td className="px-4 py-2 border">{reporte.nombre}</td>
                 <td className="px-4 py-2 border">{reporte.empleado_id}</td>
-                <td className="px-4 py-2 border">{reporte.asistencia.fecha}</td>
+                <td className="px-4 py-2 border">{reporte.fecha}</td>
+                <td className="px-4 py-2 border">{reporte.hora_entrada}</td>
+                <td className="px-4 py-2 border">{reporte.hora_salida}</td>
                 <td className="px-4 py-2 border">
-                  {reporte.asistencia.hora_entrada}
+                  <div>
+                    <strong>Entrada:</strong> {reporte.emocion_entrada}
+                  </div>
+                  <div>
+                    <strong>Salida:</strong> {reporte.emocion_salida}
+                  </div>
                 </td>
                 <td className="px-4 py-2 border">
-                  {reporte.asistencia.hora_salida}
+                  <div>
+                    <strong>Entrada:</strong> {reporte.comentarios_entrada}
+                  </div>
+                  <div>
+                    <strong>Salida:</strong> {reporte.comentarios_salida}
+                  </div>
                 </td>
-                <td className="px-4 py-2 border">
-                  {reporte.emocion_registrada}
-                </td>
-                <td className="px-4 py-2 border">{reporte.observaciones}</td>
               </tr>
             ))}
           </tbody>

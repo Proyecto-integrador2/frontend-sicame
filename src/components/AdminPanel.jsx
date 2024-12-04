@@ -26,13 +26,21 @@ function AdminPanel() {
       <div className="space-x-4 flex mb-6">
         <button
           onClick={() => setSelectedSection("reportes")}
-          className="border py-3 px-6 rounded-lg w-full text-gray-800 hover:bg-gray-200 transition duration-200"
+          className={`py-3 px-6 rounded-lg w-full text-gray-800 transition duration-200 ${
+            selectedSection === "reportes"
+              ? "bg-gray-300 font-semibold shadow-md"
+              : "border hover:bg-gray-200"
+          }`}
         >
           Reportes
         </button>
         <button
           onClick={() => setSelectedSection("gestion")}
-          className="border py-3 px-6 rounded-lg w-full text-gray-800 hover:bg-gray-200 transition duration-200"
+          className={`py-3 px-6 rounded-lg w-full text-gray-800 transition duration-200 ${
+            selectedSection === "gestion"
+              ? "bg-gray-300 font-semibold shadow-md"
+              : "border hover:bg-gray-200"
+          }`}
         >
           Gestión de Empleados
         </button>
