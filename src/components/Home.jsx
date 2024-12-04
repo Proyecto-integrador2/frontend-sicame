@@ -5,27 +5,31 @@ function Home() {
   const navigate = useNavigate();
 
   const handleStartProcess = () => {
-    navigate('/entrada');
+    navigate("/entrada");
   };
 
   const handleEndProcess = () => {
-    navigate('/salida');
+    navigate("/salida");
   };
 
   const handleRegisterUser = () => {
-    navigate('/registrar-empleado'); 
+    navigate("/registrar-empleado");
   };
 
   const handleAdminPanel = () => {
-    navigate('/admin'); 
+    navigate("/admin");
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <div className="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg">
+        {/* Logo */}
+        <img src={"./logo.png"} className="mx-auto pb-2" alt="logo" />
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">SICAME</h1>
-          <p className="text-lg text-gray-600">Sistema de Control de Asistencia y Monitoreo Emocional</p>
+          <p className="text-lg text-gray-600">
+            Sistema de Control de Asistencia y Monitoreo Emocional
+          </p>
         </div>
 
         {/* Botones de navegación */}
