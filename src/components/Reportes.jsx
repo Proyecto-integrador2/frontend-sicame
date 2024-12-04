@@ -1,43 +1,38 @@
-import React, { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { getReportes } from "../api/axiosInstance";
+import { useDownloadExcel } from "react-export-table-to-excel";
 
 function Reportes() {
   const [fecha, setFecha] = useState("");
   const [empleado, setEmpleado] = useState("");
   const [tipoReporte, setTipoReporte] = useState("");
+  const [reportes, setReportes] = useState([]);
 
-  const reportesData = [
-    {
-      nombre: "Juan Pérez",
-      id: "EMP001",
-      fecha: "2023-11-26",
-      entrada: "08:00",
-      salida: "17:00",
-      emocion: "Feliz",
-      comentarios: "Buen día de trabajo",
-    },
-    {
-      nombre: "María García",
-      id: "EMP002",
-      fecha: "2023-11-26",
-      entrada: "08:15",
-      salida: "17:30",
-      emocion: "Neutral",
-      comentarios: "Día normal",
-    },
-    {
-      nombre: "Carlos Rodríguez",
-      id: "EMP003",
-      fecha: "2023-11-26",
-      entrada: "07:55",
-      salida: "16:45",
-      emocion: "Estresado",
-      comentarios: "Mucho trabajo hoy",
-    },
-  ];
+  const tableRef = useRef(null);
+
+  const { onDownload } = useDownloadExcel({
+    filename: "employee-report",
+    sheet: "employee",
+    currentTableRef: tableRef.current,
+  });
+
+  useEffect(() => {
+    const fetchReportes = async () => {
+      try {
+        const data = await getReportes();
+        setReportes(data);
+      } catch (error) {
+        console.error("Error al listar reportes: ", error);
+      }
+    };
+    fetchReportes();
+  }, []);
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Reportes de Asistencia y Emociones</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+        Reportes de Asistencia y Emociones
+      </h2>
 
       {/* Filtros */}
       <div className="mb-4 flex space-x-4">
@@ -54,9 +49,11 @@ function Reportes() {
           className="border px-4 py-2 rounded-lg"
         >
           <option value="">Seleccionar empleado</option>
-          <option value="EMP001">Juan Pérez</option>
-          <option value="EMP002">María García</option>
-          <option value="EMP003">Carlos Rodríguez</option>
+          {reportes.map((reporte, index) => (
+            <option key={index} value={reporte.empleado_id}>
+              {reporte.nombre}
+            </option>
+          ))}
         </select>
         <select
           value={tipoReporte}
@@ -67,12 +64,20 @@ function Reportes() {
           <option value="asistencia">Asistencia</option>
           <option value="emociones">Emociones</option>
         </select>
-        <button className="bg-black text-white py-2 px-4 rounded-lg">Exportar</button>
+        <button
+          onClick={onDownload}
+          className="bg-black text-white py-2 px-4 rounded-lg"
+        >
+          Exportar
+        </button>
       </div>
 
       {/* Tabla de reportes */}
       <div className="overflow-x-auto">
-        <table className="table-auto w-full border border-gray-300">
+        <table
+          ref={tableRef}
+          className="table-auto w-full border border-gray-300"
+        >
           <thead>
             <tr className="bg-gray-200">
               <th className="px-4 py-2 border">Nombre</th>
@@ -85,15 +90,21 @@ function Reportes() {
             </tr>
           </thead>
           <tbody>
-            {reportesData.map((reporte, index) => (
+            {reportes.map((reporte, index) => (
               <tr key={index}>
-                <td className="px-4 py-2 border">{reporte.nombre}</td>
-                <td className="px-4 py-2 border">{reporte.id}</td>
-                <td className="px-4 py-2 border">{reporte.fecha}</td>
-                <td className="px-4 py-2 border">{reporte.entrada}</td>
-                <td className="px-4 py-2 border">{reporte.salida}</td>
-                <td className="px-4 py-2 border">{reporte.emocion}</td>
-                <td className="px-4 py-2 border">{reporte.comentarios}</td>
+                <td className="px-4 py-2 border">{reporte.empleado.nombre}</td>
+                <td className="px-4 py-2 border">{reporte.empleado_id}</td>
+                <td className="px-4 py-2 border">{reporte.asistencia.fecha}</td>
+                <td className="px-4 py-2 border">
+                  {reporte.asistencia.hora_entrada}
+                </td>
+                <td className="px-4 py-2 border">
+                  {reporte.asistencia.hora_salida}
+                </td>
+                <td className="px-4 py-2 border">
+                  {reporte.emocion_registrada}
+                </td>
+                <td className="px-4 py-2 border">{reporte.observaciones}</td>
               </tr>
             ))}
           </tbody>
