@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import {useState, useEffect, useRef } from "react";
+import { getReportes } from "../api/axiosInstance";
+import { useDownloadExcel } from "react-export-table-to-excel";
 import { generarReporte } from "../api/axiosInstance";
 
 function Reportes() {
@@ -6,8 +8,15 @@ function Reportes() {
   const [empleado, setEmpleado] = useState("");
   const [ultimoReporte, setUltimoReporte] = useState([])
   const [tipoReporte, setTipoReporte] = useState("");
+  const tableRef = useRef(null);
 
-  React.useEffect(() => {
+  const { onDownload } = useDownloadExcel({
+    filename: "employee-report",
+    sheet: "employee",
+    currentTableRef: tableRef.current,
+  });
+
+  useEffect(() => {
     const fetchReporte = async () => {
       try {
         const data = await generarReporte();
@@ -24,7 +33,9 @@ function Reportes() {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Reportes de Asistencia y Emociones</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+        Reportes de Asistencia y Emociones
+      </h2>
 
       {/* Filtros */}
       <div className="mb-4 flex space-x-4">
@@ -41,9 +52,11 @@ function Reportes() {
           className="border px-4 py-2 rounded-lg"
         >
           <option value="">Seleccionar empleado</option>
-          <option value="EMP001">Juan Pérez</option>
-          <option value="EMP002">María García</option>
-          <option value="EMP003">Carlos Rodríguez</option>
+          {ultimoReporte.map((reporte, index) => (
+            <option key={index} value={reporte.empleado_id}>
+              {reporte.nombre}
+            </option>
+          ))}
         </select>
         <select
           value={tipoReporte}
@@ -54,12 +67,20 @@ function Reportes() {
           <option value="asistencia">Asistencia</option>
           <option value="emociones">Emociones</option>
         </select>
-        <button className="bg-black text-white py-2 px-4 rounded-lg">Exportar</button>
+        <button
+          onClick={onDownload}
+          className="bg-black text-white py-2 px-4 rounded-lg"
+        >
+          Exportar
+        </button>
       </div>
 
       {/* Tabla de reportes */}
       <div className="overflow-x-auto">
-        <table className="table-auto w-full border border-gray-300">
+        <table
+          ref={tableRef}
+          className="table-auto w-full border border-gray-300"
+        >
           <thead>
             <tr className="bg-gray-200">
               <th className="px-4 py-2 border">Nombre</th>
@@ -72,7 +93,7 @@ function Reportes() {
             </tr>
           </thead>
           <tbody>
-            {ultimoReporte.map((reporte, index) => (
+          {ultimoReporte.map((reporte, index) => (
               <tr key={index}>
                 <td className="px-4 py-2 border">{reporte.nombre}</td>
                 <td className="px-4 py-2 border">{reporte.empleado_id}</td>
