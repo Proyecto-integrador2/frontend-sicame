@@ -1,41 +1,26 @@
 import React, { useState } from "react";
+import { generarReporte } from "../api/axiosInstance";
 
 function Reportes() {
   const [fecha, setFecha] = useState("");
   const [empleado, setEmpleado] = useState("");
+  const [ultimoReporte, setUltimoReporte] = useState([])
   const [tipoReporte, setTipoReporte] = useState("");
 
-  
+  React.useEffect(() => {
+    const fetchReporte = async () => {
+      try {
+        const data = await generarReporte();
+        setUltimoReporte(data);
+        console.log(data)
+      } catch (error) {
+        console.error("Error generando reporte:", error);
+      }
+    };
 
-  const reportesData = [
-    {
-      nombre: "Juan Pérez",
-      id: "EMP001",
-      fecha: "2023-11-26",
-      entrada: "08:00",
-      salida: "17:00",
-      emocion: "Feliz",
-      comentarios: "Buen día de trabajo",
-    },
-    {
-      nombre: "María García",
-      id: "EMP002",
-      fecha: "2023-11-26",
-      entrada: "08:15",
-      salida: "17:30",
-      emocion: "Neutral",
-      comentarios: "Día normal",
-    },
-    {
-      nombre: "Carlos Rodríguez",
-      id: "EMP003",
-      fecha: "2023-11-26",
-      entrada: "07:55",
-      salida: "16:45",
-      emocion: "Estresado",
-      comentarios: "Mucho trabajo hoy",
-    },
-  ];
+    fetchReporte();
+  }, []);
+
 
   return (
     <div className="p-6">
@@ -87,15 +72,29 @@ function Reportes() {
             </tr>
           </thead>
           <tbody>
-            {reportesData.map((reporte, index) => (
+            {ultimoReporte.map((reporte, index) => (
               <tr key={index}>
                 <td className="px-4 py-2 border">{reporte.nombre}</td>
-                <td className="px-4 py-2 border">{reporte.id}</td>
+                <td className="px-4 py-2 border">{reporte.empleado_id}</td>
                 <td className="px-4 py-2 border">{reporte.fecha}</td>
-                <td className="px-4 py-2 border">{reporte.entrada}</td>
-                <td className="px-4 py-2 border">{reporte.salida}</td>
-                <td className="px-4 py-2 border">{reporte.emocion}</td>
-                <td className="px-4 py-2 border">{reporte.comentarios}</td>
+                <td className="px-4 py-2 border">{reporte.hora_entrada}</td>
+                <td className="px-4 py-2 border">{reporte.hora_salida}</td>
+                <td className="px-4 py-2 border">
+                  <div>
+                    <strong>Entrada:</strong> {reporte.emocion_entrada}
+                  </div>
+                  <div>
+                    <strong>Salida:</strong> {reporte.emocion_salida}
+                  </div>
+                </td>
+                <td className="px-4 py-2 border">
+                  <div>
+                    <strong>Entrada:</strong> {reporte.comentarios_entrada}
+                  </div>
+                  <div>
+                    <strong>Salida:</strong> {reporte.comentarios_salida}
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
