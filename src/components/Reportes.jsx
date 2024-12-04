@@ -5,6 +5,8 @@ function Reportes() {
   const [empleado, setEmpleado] = useState("");
   const [tipoReporte, setTipoReporte] = useState("");
 
+  
+
   const reportesData = [
     {
       nombre: "Juan Pérez",
