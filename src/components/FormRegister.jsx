@@ -28,13 +28,6 @@ const RegistrarEmpleadoForm = () => {
   return (
     <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">Registrar Empleado</h2>
-      <div>
-      <Link to="/admin" className="text-gray-600 text-sm font-medium hover:text-gray-800">
-          Volver
-        </Link>
-
-      </div>
-      
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Nombre */}
         <div>
@@ -101,6 +94,11 @@ const RegistrarEmpleadoForm = () => {
           >
             Registrar
           </button>
+        </div>
+        <div className="text-center">
+          <Link to="/" className="text-gray-600 text-sm font-medium hover:text-gray-800">
+            Volver
+          </Link>
         </div>
       </form>
     </div>
