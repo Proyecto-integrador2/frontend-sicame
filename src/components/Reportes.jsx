@@ -12,7 +12,7 @@ function Reportes() {
       try {
         const data = await generarReporte();
         setUltimoReporte(data);
-        console.log(data)
+        setFecha(data[0].fecha)
       } catch (error) {
         console.error("Error generando reporte:", error);
       }
@@ -33,7 +33,7 @@ function Reportes() {
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
           className="border px-4 py-2 rounded-lg"
-          placeholder="dd/mm/aaaa"
+          placeholder=""
         />
         <select
           value={empleado}
